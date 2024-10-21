@@ -20,7 +20,13 @@ process RAGTAG_SCAFFOLD {
   script:
       def prefix = task.ext.prefix ?: "${meta}"
   """
-  zcat ${assembly} > ${meta}.fa
+  if [ ${assembly} == *.gz ]
+    then 
+      zcat ${assembly} > ${meta}.fa
+    else
+      mv ${assembly} ${meta}.fa
+  fi
+  
   ragtag.py scaffold ${reference} ${meta}.fa \\
     -o "${assembly}_ragtag_${reference}" \\
     -t $task.cpus \\
