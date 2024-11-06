@@ -37,7 +37,7 @@ process QUAST {
         --threads $task.cpus \\
         ${consensus.join(' ')} \\
         --glimmer \\
-        --conserved-genes-finding \\
+        #--conserved-genes-finding \\
         $reference_bam \\
         --bam ${bam} \\
         --large \\

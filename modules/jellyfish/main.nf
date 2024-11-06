@@ -1,5 +1,5 @@
 process COUNT {
-    tag "$meta"
+    tag "$meta.id"
     label 'process_medium'
     publishDir(
       path: { "${params.out}/${task.process}".replace(':','/').toLowerCase() }, 
@@ -30,12 +30,12 @@ process COUNT {
          -C \\
          -t $task.cpus ${fasta.baseName}.fasta 
          
-        mv mer_counts.jf ${meta}_mer_counts.jf
+        mv mer_counts.jf ${meta.id}_mer_counts.jf
         """
 }
 
 process HISTO {
-    tag "$meta"
+    tag "$meta.id"
     label 'process_medium'
     publishDir(
       path: { "${params.out}/${task.process}".replace(':','/').toLowerCase() }, 
@@ -51,12 +51,12 @@ process HISTO {
 
     script:
         """
-        jellyfish histo $kmers > ${meta}_hist.tsv         
+        jellyfish histo $kmers > ${meta.id}_hist.tsv         
         """
 }
 
 process STATS {
-    tag "$meta"
+    tag "$meta.id"
     label 'process_medium'
 
     publishDir(
@@ -73,12 +73,12 @@ process STATS {
 
     script:
         """
-        jellyfish stats $kmers > ${meta}_stats.txt       
+        jellyfish stats $kmers > ${meta.id}_stats.txt       
         """
 }
 
 process DUMP {
-    tag "$meta"
+    tag "$meta.id"
     label 'process_medium'
     publishDir(
       path: { "${params.out}/${task.process}".replace(':','/').toLowerCase() }, 
@@ -94,6 +94,6 @@ process DUMP {
 
     script:
         """
-        jellyfish dump $kmers > ${meta}_kmers.fa  
+        jellyfish dump $kmers > ${meta.id}_kmers.fa  
         """
 }

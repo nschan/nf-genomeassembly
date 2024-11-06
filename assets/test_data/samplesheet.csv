@@ -1,0 +1,2 @@
+sample,ontreads,hifireads,ref_fasta,ref_gff
+Col-0_subset,ONT_Col-0_test_data.fastq.gz,pacbio_Col-0_test_data.fastq.gz,https://github.com/schatzlab/Col-CEN/raw/refs/heads/main/v1.2/Col-CEN_v1.2.fasta.gz?raw=true,https://github.com/schatzlab/Col-CEN/raw/refs/heads/main/v1.2/Col-CEN_v1.2_genes.araport11.gff3.gz?raw=true

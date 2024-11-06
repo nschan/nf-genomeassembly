@@ -20,7 +20,7 @@ process RAGTAG_SCAFFOLD {
   script:
       def prefix = task.ext.prefix ?: "${meta}"
   """
-  if [ ${assembly} == *.gz ]
+  if [[ ${assembly} == *.gz ]]
     then 
       zcat ${assembly} > ${meta}.fa
     else

@@ -22,6 +22,8 @@ workflow ASSEMBLE {
   main:
     // References
     Channel.empty().set { ch_refs }
+    Channel.empty().set { ch_ref_bam }
+    Channel.empty().set { ch_assembly_bam }
 
     if (params.use_ref) {
       ch_input
@@ -171,31 +173,34 @@ workflow ASSEMBLE {
           }
         }
       }
-      if(params.use_ref) {
-        MAP_TO_REF(longreads, ch_refs)
+      if(params.quast) {
 
-        MAP_TO_REF
+        if(params.use_ref) {
+          MAP_TO_REF(longreads, ch_refs)
+
+          MAP_TO_REF
+            .out
+            .set { ch_ref_bam }
+        }
+
+        MAP_TO_ASSEMBLY(longreads, ch_assembly)
+        MAP_TO_ASSEMBLY
           .out
-          .set { ch_ref_bam }
+          .aln_to_assembly_bam
+          .set { ch_assembly_bam }
+
+        MAP_TO_ASSEMBLY
+          .out
+          .aln_to_assembly_bam_bai
+          .set { ch_assembly_bam_bai }
+      RUN_QUAST(ch_assembly, ch_input, ch_ref_bam, ch_assembly_bam)
       }
-
-      MAP_TO_ASSEMBLY(longreads, ch_assembly)
-      MAP_TO_ASSEMBLY
-        .out
-        .aln_to_assembly_bam
-        .set { ch_assembly_bam }
-
-      MAP_TO_ASSEMBLY
-        .out
-        .aln_to_assembly_bam_bai
-        .set { ch_assembly_bam_bai }
     }
     /*
     QC on initial assembly
     */
     RUN_BUSCO(ch_assembly)
 
-    RUN_QUAST(ch_assembly, ch_input, ch_ref_bam, ch_assembly_bam)
     
     YAK_QC(ch_assembly, yak_kmers)
 
